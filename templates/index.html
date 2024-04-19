@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta content="width=device-width, initial-scale=1" name="viewport" />
+    <title>Chat App</title>
+    <!-- Bootstrap CSS -->
+    <link
+      rel="stylesheet"
+      href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
+    />
+    <link
+      rel="stylesheet"
+      href="{{ url_for('static', filename='styles/style.css') }}"
+    />
+  </head>
+  <body>
+    <div class="app-pane">
+      <button onclick="reload()" class="button">Reload</button>
+    </div>
+
+    <div class="m-0 p-0 mt-5">
+      <div class="chat-container hide-scrollbar">
+        <div id="chat-messages"></div>
+        <div class="input-group mt-3">
+          <input
+            type="text"
+            id="messageInput"
+            class="form-control"
+            placeholder="Enter Data in Format: Merchant, Destination City, Amount (eg. Outfitters, Karachi, 70000)"
+          />
+          <div class="input-group-append">
+            <!--button id="sendMessage" class="btn btn-primary">Send</button-->
+            <img
+              id="sendMessage"
+              class="btn btn-primary"
+            />
+          </div>
+        </div>
+      </div>
+    </div>
+  </body>
+  <!-- Bootstrap JS and jQuery -->
+  <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.10.2/dist/umd/popper.min.js"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+  <script>
+    function reload() {
+      const button = document.querySelector("button");
+      button.addEventListener("click", () => {
+        window.location.reload();
+      });
+    }
+  </script>
+
+  <script>
+    document.addEventListener("DOMContentLoaded", function () {
+      const chatMessages = document.getElementById("chat-messages");
+      const messageInput = document.getElementById("messageInput");
+      const sendMessageBtn = document.getElementById("sendMessage");
+
+      // Function to add a message to the chat window
+      function addMessage(message, sender) {
+        const messageDiv = document.createElement("div");
+        messageDiv.textContent = message;
+        messageDiv.classList.add("message");
+        if (sender === "user") {
+          messageDiv.classList.add("user-message");
+        } else {
+          messageDiv.classList.add("response-message");
+        }
+        chatMessages.appendChild(messageDiv);
+      }
+      
+      function sendMessage() {
+        const message = messageInput.value.trim();
+        if (message !== "") {
+            // Split the message based on commas to get individual parts (Merchant, City, Amount)
+            const messageParts = message.split(",");
+            addMessage(message, "user");
+            // Check if the message has the expected format (3 parts)
+            if (messageParts.length !== 3) {
+            alert("Please enter data in the format: Merchant, Destination City, Amount");
+            return;
+            }
+
+            const merchant = messageParts[0].trim();
+            const city = messageParts[1].trim();
+            const amount = messageParts[2].trim();
+
+            // Prepare a JSON object with parsed data
+            const data = {
+            merchant: merchant,
+            city: city,
+            amount: amount
+            };
+
+            // Send the JSON object to the server
+            fetch("/app/api", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify(data)
+            })
+            .then((response) => response.text())
+            .then((data) => {
+                const jsonObject = JSON.parse(data);
+                console.log(jsonObject.message)
+              // Process the response text
+              addMessage(jsonObject.message, "server");
+            })
+            .catch((error) => {
+              console.error("Error:", error);
+            });
+          // Clear the input field after sending message
+          messageInput.value = "";
+        }
+        }
+
+    //   // Function to send message to server and update chat
+    //   function sendMessage() {
+    //     const message = messageInput.value.trim();
+    //     if (message !== "") {
+    //       addMessage("Me: "+message, "user");
+
+    //       // Send message to the server
+    //       fetch("/app/api", {
+    //         method: "POST",
+    //         headers: {
+    //           "Content-Type": "application/json",
+    //         },
+    //       })
+    //         .then((response) => response.json()) // Parse response as text instead of JSON
+    //         .then((data) => {
+    //             console.log(data)
+    //           // Process the response text
+    //           addMessage(data, "server");
+    //         })
+    //         .catch((error) => {
+    //           console.error("Error:", error);
+    //         });
+    //       // Clear the input field after sending message
+    //       messageInput.value = "";
+    //     }
+    //   }
+
+      // Event listener for send button click
+      sendMessageBtn.addEventListener("click", sendMessage);
+      
+      // Optional: Allow pressing 'Enter' key to send message
+      messageInput.addEventListener("keypress", function (e) {
+        if (e.key === "Enter") {
+          sendMessage();
+        }
+      });
+    });
+  </script>
+</html>
