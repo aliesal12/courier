@@ -23,6 +23,20 @@
       <div class="chat-container hide-scrollbar">
         <div id="chat-messages"></div>
         <div class="input-group mt-3">
+          <div class="dropdown">
+            <label for="merchantDropdown">Select Merchant:</label>
+            <select id="merchantDropdown">
+              <option value="" disabled selected>Select Merchant</option>
+            </select>
+          </div>
+        
+          <div class="dropdown">
+            <label for="cityDropdown">Select City:</label>
+            <select id="cityDropdown">
+              <option value="" disabled selected>Select City</option>
+            </select>
+          </div>
+          <label for="messageInput">Add Amount:</label>
           <input
             type="text"
             id="messageInput"
@@ -54,6 +68,94 @@
   </script>
 
   <script>
+     // Define an array of merchants
+      const merchants = [
+        { value: 'Khaadi', text: 'Khaadi' },
+        { value: 'Sapphire', text: 'Sapphire' },
+        { value: 'Outfitters', text: 'Outfitters' },
+        { value: 'Sana Safinaz', text: 'Sana Safinaz' },
+        { value: 'Gul Ahmed', text: 'Gul Ahmed' },
+        { value: 'Bachaa Party', text: 'Bachaa Party' }
+      ];
+
+      // Define an array of cities
+      const cities = [
+        { value: 'Abbottabad', text: 'Abbottabad' },
+        { value: 'Bahawalpur', text: 'Bahawalpur' },
+        { value: 'Faisalabad', text: 'Faisalabad' },
+        { value: 'Gujranwala', text: 'Gujranwala' },
+        { value: 'Gujrat', text: 'Gujrat' },
+        { value: 'Hyderabad', text: 'Hyderabad' },
+        { value: 'Islamabad', text: 'Islamabad' },
+        { value: 'Jamshoro', text: 'Jamshoro' },
+        { value: 'Jehangira', text: 'Jehangira' },
+        { value: 'Jhang', text: 'Jhang' },
+        { value: 'Kamoke', text: 'Kamoke' },
+        { value: 'Karachi', text: 'Karachi' },
+        { value: 'Khurrianwala', text: 'Khurrianwala' },
+        { value: 'Kotri', text: 'Kotri' },
+        { value: 'Kunjah', text: 'Kunjah' },
+        { value: 'Lahore', text: 'Lahore' },
+        { value: 'Matiari', text: 'Matiari' },
+        { value: 'Multan', text: 'Multan' },
+        { value: 'Muzaffarabad', text: 'Muzaffarabad' },
+        { value: 'Nawabshah', text: 'Nawabshah' },
+        { value: 'Peshawar', text: 'Peshawar' },
+        { value: 'Qasim Pur', text: 'Qasim Pur' },
+        { value: 'Quetta', text: 'Quetta' },
+        { value: 'Rahim Yar Khan', text: 'Rahim Yar Khan' },
+        { value: 'Rawalpindi', text: 'Rawalpindi' },
+        { value: 'Sadiqabad', text: 'Sadiqabad' },
+        { value: 'Sahiwal', text: 'Sahiwal' },
+        { value: 'Sargodha', text: 'Sargodha' },
+        { value: 'Shabqadar', text: 'Shabqadar' },
+        { value: 'Sialkot', text: 'Sialkot' },
+        { value: 'Sukkur', text: 'Sukkur' },
+        { value: 'Talagang', text: 'Talagang' },
+        { value: 'Tando Allahyar', text: 'Tando Allahyar' },
+        { value: 'Tando Jam', text: 'Tando Jam' },
+        { value: 'Taxila', text: 'Taxila' },
+        { value: 'Wagah', text: 'Wagah' },
+        { value: 'Wah Cantt', text: 'Wah Cantt' },
+        { value: 'Wazirabad', text: 'Wazirabad' }
+      ];
+
+      // Function to populate dropdown dynamically
+      function populateDropdown(dropdown, options) {
+        options.forEach(option => {
+          const optionElement = document.createElement('option');
+          optionElement.value = option.value;
+          optionElement.textContent = option.text;
+          dropdown.appendChild(optionElement);
+        });
+      }
+
+      // Get the select elements
+      const merchantDropdown = document.getElementById('merchantDropdown');
+      const cityDropdown = document.getElementById('cityDropdown');
+
+      // Populate the merchant dropdown
+      populateDropdown(merchantDropdown, merchants);
+
+      // Populate the city dropdown
+      populateDropdown(cityDropdown, cities);
+      // Function to handle dropdown change
+      let selectedCity;
+      let selectedMerchant;
+      function handleDropdownChange() {
+        selectedCity = cityDropdown.value;
+        console.log("Selected City:", selectedCity);
+      }
+      function handleMerchantChange() {
+        selectedMerchant = merchantDropdown.value;
+        console.log("Selected Merchant:", selectedMerchant);
+      }
+
+      // Add event listener to both dropdowns
+      merchantDropdown.addEventListener('change', handleMerchantChange);
+      cityDropdown.addEventListener('change', handleDropdownChange);
+
+
     document.addEventListener("DOMContentLoaded", function () {
       const chatMessages = document.getElementById("chat-messages");
       const messageInput = document.getElementById("messageInput");
@@ -71,28 +173,24 @@
         }
         chatMessages.appendChild(messageDiv);
       }
+
       
       function sendMessage() {
         const message = messageInput.value.trim();
-        if (message !== "") {
-            // Split the message based on commas to get individual parts (Merchant, City, Amount)
-            const messageParts = message.split(",");
-            addMessage(message, "user");
-            // Check if the message has the expected format (3 parts)
-            if (messageParts.length !== 3) {
-            alert("Please enter data in the format: Merchant, Destination City, Amount");
+        console.log('sendMessage')
+        console.log({selectedCity})
+        console.log({selectedMerchant})
+        console.log({message})
+        if(!selectedCity || !selectedMerchant || ! message){
+          alert("Please enter data in the format: Merchant, Destination City, Amount");
             return;
-            }
-
-            const merchant = messageParts[0].trim();
-            const city = messageParts[1].trim();
-            const amount = messageParts[2].trim();
-
+        }else {
+            
             // Prepare a JSON object with parsed data
             const data = {
-            merchant: merchant,
-            city: city,
-            amount: amount
+            merchant: selectedMerchant,
+            city: selectedCity,
+            amount: message
             };
 
             // Send the JSON object to the server
@@ -156,4 +254,5 @@
       });
     });
   </script>
+
 </html>
