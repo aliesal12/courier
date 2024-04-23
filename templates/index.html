@@ -41,7 +41,7 @@
             type="text"
             id="messageInput"
             class="form-control"
-            placeholder="Enter Data in Format: Merchant, Destination City, Amount (eg. Outfitters, Karachi, 70000)"
+            placeholder="Enter Amount"
           />
           <div class="input-group-append">
             <!--button id="sendMessage" class="btn btn-primary">Send</button-->
@@ -182,7 +182,7 @@
         console.log({selectedMerchant})
         console.log({message})
         if(!selectedCity || !selectedMerchant || ! message){
-          alert("Please enter data in the format: Merchant, Destination City, Amount");
+          alert("Please enter relevant Data");
             return;
         }else {
             
