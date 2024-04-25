@@ -16,7 +16,7 @@
   </head>
   <body>
     <div class="app-pane">
-      <button onclick="reload()" class="button">Reload</button>
+      <button id="reload" class="button">Reload</button>
     </div>
 
     <div class="m-0 p-0 mt-5">
@@ -29,7 +29,7 @@
               <option value="" disabled selected>Select Merchant</option>
             </select>
           </div>
-        
+          
           <div class="dropdown">
             <label for="cityDropdown">Select City:</label>
             <select id="cityDropdown">
@@ -42,6 +42,13 @@
             id="messageInput"
             class="form-control"
             placeholder="Enter Amount"
+          />
+          <label for="messageInput">Enter Contact:</label>
+          <input
+            type="text"
+            id="messageInput"
+            class="form-control"
+            placeholder="Enter Contact"
           />
           <div class="input-group-append">
             <!--button id="sendMessage" class="btn btn-primary">Send</button-->
@@ -155,6 +162,13 @@
       merchantDropdown.addEventListener('change', handleMerchantChange);
       cityDropdown.addEventListener('change', handleDropdownChange);
 
+      document.addEventListener("DOMContentLoaded", function() {
+        document.getElementById("reload").addEventListener("click", function() {
+            window.location.href = "https://courier-owgo.onrender.com/app";
+        });
+
+        
+    });
 
     document.addEventListener("DOMContentLoaded", function () {
       const chatMessages = document.getElementById("chat-messages");
