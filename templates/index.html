@@ -55,6 +55,7 @@
             <img
               id="sendMessage"
               class="btn btn-primary"
+              src="static\imgs\sendbutton.png"
             />
           </div>
         </div>
@@ -192,14 +193,14 @@
       function sendMessage() {
         const message = messageInput.value.trim();
         console.log('sendMessage')
-        console.log({selectedCity})
-        console.log({selectedMerchant})
-        console.log({message})
+        console.log(selectedCity)
+        console.log(selectedMerchant)
+        console.log(message)
         if(!selectedCity || !selectedMerchant || ! message){
           alert("Please enter relevant Data");
             return;
         }else {
-            
+          addMessage("City: "+selectedCity+", Merchant: "+selectedMerchant+", Amount: "+message, "user");
             // Prepare a JSON object with parsed data
             const data = {
             merchant: selectedMerchant,

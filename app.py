@@ -25,7 +25,7 @@ def process_api_request_student():
 mercs=['khaadi', 'sapphire', 'outfitters', 'sana safinaz', 'gul ahmed', 'bachaa party']
 mercs.sort()
 cities=['lahore', 'multan', 'karachi', 'rawalpindi', 'faisalabad', 'islamabad','sukkur', 'gujranwala', 'taxila', 'hyderabad', 'sahiwal', 'qasim pur','bahawalpur', 'peshawar', 'wah cantt', 'quetta', 'sialkot', 'jehangira','sargodha' ,
-        'talagang', 'wazirabad', 'kamoke', 'khurrianwala', 'shabqadar','tando allahyar', 'wagah', 'rahim yar khan', 'nawabshah', 'muzaffarabad', 'gujrat', 'sadiqabad', 'kotri', 'jamshoro', 'tando jam', 'kunjah', 'jhang','matiari ', 'abbottabad']   
+        'talagang', 'wazirabad', 'kamoke', 'khurrianwala', 'shabqadar','tando allahyar', 'wagah', 'rahim yar khan', 'nawabshah', 'muzaffarabad', 'gujrat', 'sadiqabad', 'kotri', 'jamshoro', 'tando jam', 'kunjah', 'jhang','matiari', 'abbottabad']   
 cities.sort()
 
 def encode_user_input(city, merchant):
